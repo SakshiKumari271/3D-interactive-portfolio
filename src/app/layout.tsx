@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Archivo_Black } from "next/font/google";
+import { Archivo_Black } from "next/font/google";
 import "./globals.css";
 import ElasticCursor from "@/components/ui/ElasticCursor";
 import Particles from "@/components/Particles";
@@ -12,21 +12,21 @@ import Script from "next/script";
 import Preloader from "@/components/preloader";
 import EasterEggs from "@/components/easter-eggs";
 import { config } from "@/data/config";
-import SocketContextProvider from "@/contexts/socketio";
-import RemoteCursors from "@/components/realtime/remote-cursors";
+
+// REMOVED: SocketContextProvider and RemoteCursors imports to stop 404 errors
 
 export const metadata: Metadata = {
-  title: config.title,
-  description: config.description.long,
+  title: config.title || "Sakshi Kumari | Portfolio",
+  description: config.description?.long || "AI & Python Developer Portfolio",
   keywords: config.keywords,
   authors: [{ name: config.author }],
   openGraph: {
     title: config.title,
-    description: config.description.short,
+    description: config.description?.short,
     url: config.site,
     images: [
       {
-        url: config.ogImg,
+        url: config.ogImg || "/assets/seo/og-image.png",
         width: 800,
         height: 600,
         alt: "Portfolio preview",
@@ -37,12 +37,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: config.title,
-    description: config.description.short,
-    images: [config.ogImg],
-  },
-  robots: {
-    index: true,
-    follow: true,
+    description: config.description?.short,
+    images: [config.ogImg || "/assets/seo/og-image.png"],
   },
 };
 
@@ -57,38 +53,38 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={[archivoBlack.className].join(" ")}>
+    <html lang="en" className={archivoBlack.className}>
       <head>
         <Script
           defer
           src={process.env.UMAMI_DOMAIN}
           data-website-id={process.env.UMAMI_SITE_ID}
-        ></Script>
-        {/* <Analytics /> */}
+        />
       </head>
-      <body>
+      <body className="antialiased">
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
+          enableSystem={false}
           disableTransitionOnChange
         >
-          <Particles
-            className="fixed inset-0 -z-10 animate-fade-in"
-            quantity={100}
-          />
-          <Preloader>
-            <SocketContextProvider>
-              <RemoteCursors />
-              <TooltipProvider>
+          <TooltipProvider delayDuration={0}>
+            {/* REMOVED: <SocketContextProvider> wrapper */}
+              <Preloader>
+                <Particles
+                  className="fixed inset-0 -z-10 animate-fade-in"
+                  quantity={100}
+                />
+                {/* REMOVED: <RemoteCursors /> */}
                 <Header />
                 {children}
                 <Footer />
-              </TooltipProvider>
-            </SocketContextProvider>
-            <Toaster />
-            <EasterEggs />
-            <ElasticCursor />
-          </Preloader>
+                <Toaster />
+                <EasterEggs />
+                <ElasticCursor />
+              </Preloader>
+            {/* REMOVED: </SocketContextProvider> */}
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>
