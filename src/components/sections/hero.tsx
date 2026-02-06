@@ -9,7 +9,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-  TooltipProvider, // Added this import
+  TooltipProvider,
 } from "@/components/ui/tooltip";
 import { usePreloader } from "../preloader";
 import { BlurIn, BoxReveal } from "../reveal-animations";
@@ -20,9 +20,14 @@ import { config } from "@/data/config";
 const HeroSection = () => {
   const { isLoading } = usePreloader();
 
+  // Safe split: This ensures your site doesn't crash if the name is only one word
+  const nameParts = config.author.split(" ");
+  const firstName = nameParts[0] || "Sakshi";
+  const lastName = nameParts[1] || "";
+
   return (
     <section id="hero" className={cn("relative w-full h-screen")}>
-      <TooltipProvider> {/* Wrap your tooltips in a Provider */}
+      <TooltipProvider>
         <div className="grid md:grid-cols-2">
           <div
             className={cn(
@@ -36,7 +41,7 @@ const HeroSection = () => {
               <>
                 <div className="">
                   <BlurIn delay={0.7}>
-                    <div className="md:self-start mt-4 font-thin text-md text-slate-500 dark:text-zinc-400 ml-3 cursor-default font-display sm:text-xl md:text-xl whitespace-nowrap bg-clip-text">
+                    <div className="md:self-start mt-4 font-thin text-md text-slate-500 dark:text-zinc-400 ml-3 cursor-default font-display sm:text-xl md:text-xl whitespace-nowrap">
                       Hi, I am
                       <br className="md:hidden" />
                     </div>
@@ -44,10 +49,11 @@ const HeroSection = () => {
                   <BlurIn delay={1}>
                     <Tooltip delayDuration={300}>
                       <TooltipTrigger asChild>
-                        <h1 className="font-thin text-6xl text-transparent text-slate-800 dark:text-white ml-1 text-left cursor-default text-edge-outline font-display sm:text-7xl md:text-9xl">
-                          {config.author.split(" ")[0]}
+                        {/* FIXED: Removed 'text-transparent' and added 'text-white' to make it visible */}
+                        <h1 className="font-bold text-6xl text-slate-800 dark:text-white ml-1 text-left cursor-default font-display sm:text-7xl md:text-9xl leading-tight">
+                          {firstName}
                           <br className="md:block hidden" />
-                          {config.author.split(" ")[1]}
+                          <span className="text-blue-600">{lastName}</span>
                         </h1>
                       </TooltipTrigger>
                       <TooltipContent
@@ -59,7 +65,7 @@ const HeroSection = () => {
                     </Tooltip>
                   </BlurIn>
                   <BlurIn delay={1.2}>
-                    <p className="md:self-start md:mt-4 font-thin text-md text-slate-500 dark:text-zinc-400 ml-3 cursor-default font-display sm:text-xl md:text-xl whitespace-nowrap bg-clip-text">
+                    <p className="md:self-start md:mt-4 font-thin text-md text-slate-500 dark:text-zinc-400 ml-3 cursor-default font-display sm:text-xl md:text-xl whitespace-nowrap">
                       Python Developer | AI & Logic Enthusiast
                     </p>
                   </BlurIn>
@@ -68,7 +74,7 @@ const HeroSection = () => {
                 <div className="mt-8 md:ml-2 flex flex-col gap-3 w-full max-w-sm">
                   <BoxReveal delay={2} width="100%">
                     <a
-                      href="sakshi-resume.pdf"
+                      href="/sakshi-resume.pdf"
                       download="Sakshi_Kumari_Resume.pdf"
                       className="flex items-center justify-center gap-2 px-8 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition-all w-full"
                     >
