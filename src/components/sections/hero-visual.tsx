@@ -13,7 +13,7 @@ const HeroVisual = () => {
         
         <Suspense fallback={null}>
           <Float speed={2} rotationIntensity={1.5} floatIntensity={2}>
-            {/* An interactive 3D "Logic Core" */}
+            {/* A floating 3D "Brain" or "Core" to represent your AI/Logic skills */}
             <Sphere args={[1, 100, 200]} scale={1.4}>
               <MeshDistortMaterial
                 color="#2563eb"
